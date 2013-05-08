@@ -1,0 +1,16 @@
+<?php
+
+$title = 'Remove Product';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Are you sure that you want to remove '<?php echo $this->escapeHtml($product->name); ?>'?</p>
+
+<form action="<?php echo $this->url('shoppingcart', array('action' => 'removeFromCart','id'=> $this->id,)); ?>" method="post">
+<div>
+    <input type="hidden" name="id" value="<?php echo (int) $product->id; ?>" />
+    <input type="submit" name="delete" value="Yes" />
+    <input type="submit" name="delete" value="No" />
+</div>
+</form>

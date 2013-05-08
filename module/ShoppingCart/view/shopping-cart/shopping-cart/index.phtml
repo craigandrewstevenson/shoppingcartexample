@@ -1,0 +1,56 @@
+<?php
+
+
+
+$title = "Craig's Shopping Cart";
+
+?>
+
+<h2> <?php echo  $this->escapeHtml($title);?></h2>
+
+
+<?php 
+    function makeCurrency($value)
+    {
+        return "$" . number_format( $value,2); 
+    }
+  
+    function makePercent($value)
+    {
+        return number_format( $value,2). "%"; 
+    }
+
+    if (count($shoppingCart->cartItems) == 0): ?>
+    <p>No items in the shopping cart. Go get some!</p>
+    <a href="<?php echo $this->url('product', array('action'=>'index'));?>">Go Shopping</a>
+
+<?php else:
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('shoppingcart', array('action'=>'updateCart')));
+    $form->prepare();
+    
+    echo $this->form()->openTag($form);    
+    foreach ($shoppingCart->cartItems as $cartItem): 
+?>
+    <h3><a href="<?php echo $this->url('product', array('action'=>'product', 'id'=>$cartItem->productID));?>"><?php echo $cartItem->productName; ?></a></h3>
+    <p><?php echo  $this->formRow($form->get("quantity[" . $cartItem->productID . "]")); ?></p>
+    <p>Price: <?php echo makeCurrency($cartItem->price);?></p>
+    <p>Total: <?php echo makeCurrency($cartItem->getLineItemTotalCost()); ?></p>
+    <p> Normally: <?php   echo makeCurrency($cartItem->getTotalRRP()); ?> </p>
+    <p> You Save: <?php  echo makePercent($cartItem->percentageSaved) . " (" . makeCurrency($cartItem->getTotalAmountSaved())  .")";?> </p>
+    <br/>
+    <p class="remove-from-cart-button"><a href="<?php echo $this->url('shoppingcart', array('action'=>'removeFromCart', 'id'=>$cartItem->productID));?>">Remove From Cart</a></p>
+
+    <?php endforeach; 
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();?>
+    <a href="<?php echo $this->url('product', array('action'=>'index', ));?>">Shop For More</a>    
+<?php endif;?>
+ 
+
+
+
+
+
+
+

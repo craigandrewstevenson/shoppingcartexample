@@ -1,0 +1,16 @@
+
+
+<?php
+   
+
+
+$title = "Craig's Shop";
+  
+?>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php foreach ($products as $product): ?>
+<h4><a href="<?php echo $this->url('product', array('action'=>'product', 'id'=>$product->id));?>"><?php  echo $product->name ; ?></a></h4>
+<?php endforeach;?>
+<p class="show-cart-button"><a href="<?php echo $this->url('shoppingcart', array('action'=>'index'));?>">Show Cart</a></p>

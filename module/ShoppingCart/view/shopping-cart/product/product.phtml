@@ -1,0 +1,41 @@
+
+
+<?php
+use ShoppingCart\Form\AddToCartForm;    
+use ShoppingCart\Model\CartItem;
+
+$title = 'Product Details';
+
+
+function makeCurrency($value)
+{
+    return "$" . number_format( $value,2); 
+}
+  
+function makePercent($value)
+{
+    return number_format( $value,2) . "%"; 
+}
+
+?>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<h2> <?php  echo $product->name; ?></h2> 
+<p> Our price: <?php  echo makeCurrency($product->price); ?></p>
+<p> Normally: <?php  echo makeCurrency($product->rrp); ?></p>
+<p> You Save: <?php  echo makePercent($product->getSavingsPercentage()) . " (" . makeCurrency($product->getSavingsAmount())  .")";?></p>
+
+<?php 
+ 
+    $form = $this->form; 
+    $form->setAttribute('action', $this->url('shoppingcart', array('action'=>'addToCart')));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+    ?>
+
+<a href="<?php echo $this->url('product', array('action'=>'index', ));?>">Return To Products</a>    
+
+
